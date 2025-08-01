@@ -1,0 +1,16 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="AvaloniaRoutingExample.UI.Views.NotificationsSettingsControl"
+             xmlns:vm="using:AvaloniaRoutingExample.ViewModel"
+             x:DataType="vm:NotificationsSettingsViewModel">
+  <StackPanel Margin="20">
+    <TextBlock Text="Уведомления" FontWeight="Bold" FontSize="16" Margin="0,0,0,10"/>
+
+    <CheckBox Content="Email-уведомления" IsChecked="{Binding IsEmailEnabled}"/>
+    <CheckBox Content="Push-уведомления" IsChecked="{Binding IsPushEnabled}" Margin="0,5,0,10"/>
+
+  </StackPanel>
+</UserControl>

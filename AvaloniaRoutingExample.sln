@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.12.35707.178 d17.12
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AvaloniaRoutingExample.UI", "AvaloniaRoutingExample.UI\AvaloniaRoutingExample.UI.csproj", "{BD07C8D2-7E0E-45DB-9017-E4644B28F900}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AvaloniaRoutingExample.ViewModel", "AvaloniaRoutingExample.ViewModel\AvaloniaRoutingExample.ViewModel.csproj", "{EE704425-38F1-4BFD-ACD0-8474D27EC670}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{BD07C8D2-7E0E-45DB-9017-E4644B28F900}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BD07C8D2-7E0E-45DB-9017-E4644B28F900}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BD07C8D2-7E0E-45DB-9017-E4644B28F900}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BD07C8D2-7E0E-45DB-9017-E4644B28F900}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EE704425-38F1-4BFD-ACD0-8474D27EC670}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EE704425-38F1-4BFD-ACD0-8474D27EC670}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EE704425-38F1-4BFD-ACD0-8474D27EC670}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EE704425-38F1-4BFD-ACD0-8474D27EC670}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
