@@ -1,4 +1,5 @@
 ﻿using ReactiveUI;
+using ReactiveUI.Fody.Helpers;
 using System.Collections.ObjectModel;
 using System.Reactive;
 using System.Reactive.Linq;
@@ -13,6 +14,9 @@ public class MainWindowViewModel : ReactiveObject, IScreen
 
     public ReactiveCommand<IRoutableViewModel, Unit> NavigateToSectionCommand { get; }
 
+    [Reactive]
+    public IRoutableViewModel? CurrentSection { get; private set; }
+
     public MainWindowViewModel()
     {
         SettingsSections = new ObservableCollection<IRoutableViewModel>
@@ -24,7 +28,10 @@ public class MainWindowViewModel : ReactiveObject, IScreen
         NavigateToSectionCommand = ReactiveCommand.CreateFromTask<IRoutableViewModel>(async vm =>
         {
             await Router.Navigate.Execute(vm);
+            CurrentSection = vm;
         });
+
+        NavigateToSectionCommand.Execute(SettingsSections.First()).Subscribe();
     }
 }
 

@@ -1,15 +1,22 @@
-<Window x:Name="MainWnd"
-        xmlns="https://github.com/avaloniaui"
-        xmlns:rxui="http://reactiveui.net"
-        xmlns:app="clr-namespace:AvaloniaRoutingExample.UI"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:vm="using:AvaloniaRoutingExample.ViewModel"
-        x:DataType="vm:MainWindowViewModel"
-        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-        x:Class="AvaloniaRoutingExample.UI.Views.MainWindow"
-        Title="Настройки">
+<Window
+    xmlns="https://github.com/avaloniaui"
+    xmlns:rxui="http://reactiveui.net"
+    xmlns:app="clr-namespace:AvaloniaRoutingExample.UI"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:vm="using:AvaloniaRoutingExample.ViewModel"
+    xmlns:conv="clr-namespace:AvaloniaRoutingExample.UI.Converters"
+    x:DataType="vm:MainWindowViewModel"
+    mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+    x:Class="AvaloniaRoutingExample.UI.Views.MainWindow"
+    x:Name="MainWnd"
+    Title="Настройки">
+
+  <Window.Resources>
+    <conv:EqualityToBrushConverter x:Key="EqualityToBrushConverter" />
+  </Window.Resources>
+
   <DockPanel>
     <StackPanel Width="180" DockPanel.Dock="Left" Margin="10">
       <TextBlock Text="Разделы:" FontWeight="Bold" Margin="0,0,0,8"/>
@@ -18,7 +25,15 @@
           <DataTemplate>
             <Button Content="{Binding UrlPathSegment}"
                     Command="{Binding DataContext.NavigateToSectionCommand, ElementName=MainWnd}"
-                    CommandParameter="{Binding}" Margin="0,2"/>
+                    CommandParameter="{Binding}"
+                    Margin="0,2">
+              <Button.Background>
+                <MultiBinding Converter="{StaticResource EqualityToBrushConverter}">
+                  <Binding ElementName="MainWnd" Path="DataContext.CurrentSection" />
+                  <Binding />
+                </MultiBinding>
+              </Button.Background>
+            </Button>
           </DataTemplate>
         </ItemsControl.ItemTemplate>
       </ItemsControl>
