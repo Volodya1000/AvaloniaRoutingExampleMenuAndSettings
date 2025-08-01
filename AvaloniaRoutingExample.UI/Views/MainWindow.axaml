@@ -3,37 +3,37 @@
     xmlns:rxui="http://reactiveui.net"
     xmlns:app="clr-namespace:AvaloniaRoutingExample.UI"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:vm="using:AvaloniaRoutingExample.ViewModel"
-    xmlns:conv="clr-namespace:AvaloniaRoutingExample.UI.Converters"
-    x:DataType="vm:MainWindowViewModel"
-    mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
     x:Class="AvaloniaRoutingExample.UI.Views.MainWindow"
     x:Name="MainWnd"
+    x:DataType="vm:MainWindowViewModel"
     Title="Настройки">
 
-  <Window.Resources>
-    <conv:EqualityToBrushConverter x:Key="EqualityToBrushConverter" />
-  </Window.Resources>
+  <Window.Styles>
+    <Style Selector="Button">
+      <Setter Property="Background" Value="Transparent"/>
+      <Setter Property="Foreground" Value="Gray"/>
+      <Setter Property="FontWeight" Value="Normal"/>
+    </Style>
+    <Style Selector="Button.selected">
+      <Setter Property="Background" Value="LightBlue"/>
+      <Setter Property="Foreground" Value="Black"/>
+      <Setter Property="FontWeight" Value="Bold"/>
+    </Style>
+  </Window.Styles>
 
   <DockPanel>
-    <StackPanel Width="180" DockPanel.Dock="Left" Margin="10">
+    <StackPanel DockPanel.Dock="Left" Width="180" Margin="10">
       <TextBlock Text="Разделы:" FontWeight="Bold" Margin="0,0,0,8"/>
       <ItemsControl ItemsSource="{Binding SettingsSections}">
         <ItemsControl.ItemTemplate>
           <DataTemplate>
+            <!-- Исправленная кнопка с правильной привязкой класса -->
             <Button Content="{Binding UrlPathSegment}"
                     Command="{Binding DataContext.NavigateToSectionCommand, ElementName=MainWnd}"
                     CommandParameter="{Binding}"
-                    Margin="0,2">
-              <Button.Background>
-                <MultiBinding Converter="{StaticResource EqualityToBrushConverter}">
-                  <Binding ElementName="MainWnd" Path="DataContext.CurrentSection" />
-                  <Binding />
-                </MultiBinding>
-              </Button.Background>
-            </Button>
+                    Classes.selected="{Binding IsSelected}"
+                    Margin="0,2"/>
           </DataTemplate>
         </ItemsControl.ItemTemplate>
       </ItemsControl>

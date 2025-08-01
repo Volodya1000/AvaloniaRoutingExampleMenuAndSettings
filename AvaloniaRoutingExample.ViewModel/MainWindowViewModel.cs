@@ -1,37 +1,47 @@
-﻿using ReactiveUI;
+﻿using AvaloniaRoutingExample.ViewModel;
 using ReactiveUI.Fody.Helpers;
+using ReactiveUI;
 using System.Collections.ObjectModel;
 using System.Reactive;
-using System.Reactive.Linq;
 
 namespace AvaloniaRoutingExample.ViewModel;
 
 public class MainWindowViewModel : ReactiveObject, IScreen
 {
-    public RoutingState Router { get; } = new RoutingState();
+    public RoutingState Router { get; } = new();
 
-    public ObservableCollection<IRoutableViewModel> SettingsSections { get; }
-
-    public ReactiveCommand<IRoutableViewModel, Unit> NavigateToSectionCommand { get; }
+    public ObservableCollection<SectionItemViewModel> SettingsSections { get; }
 
     [Reactive]
-    public IRoutableViewModel? CurrentSection { get; private set; }
+    public SectionItemViewModel? CurrentSection { get; private set; }
+
+    public ReactiveCommand<SectionItemViewModel, Unit> NavigateToSectionCommand { get; }
 
     public MainWindowViewModel()
     {
-        SettingsSections = new ObservableCollection<IRoutableViewModel>
+        SettingsSections = new ObservableCollection<SectionItemViewModel>
         {
-            new GeneralSettingsViewModel(this),
-            new NotificationsSettingsViewModel(this)
+            new(new GeneralSettingsViewModel(this)),
+            new(new NotificationsSettingsViewModel(this)),
+            new(new DisplaySettingsViewModel(this))
         };
 
-        NavigateToSectionCommand = ReactiveCommand.CreateFromTask<IRoutableViewModel>(async vm =>
+        NavigateToSectionCommand = ReactiveCommand.Create<SectionItemViewModel>(section =>
         {
-            await Router.Navigate.Execute(vm);
-            CurrentSection = vm;
+            Router.Navigate.Execute(section.ViewModel);
+            CurrentSection = section;
         });
 
-        NavigateToSectionCommand.Execute(SettingsSections.First()).Subscribe();
+        // Автоматическое выделение текущего раздела
+        this.WhenAnyValue(x => x.CurrentSection)
+            .Subscribe(current =>
+            {
+                foreach (var section in SettingsSections)
+                    section.IsSelected = section == current;
+            });
+
+        // Навигация по умолчанию
+        CurrentSection = SettingsSections.First();
+        Router.Navigate.Execute(CurrentSection.ViewModel).Subscribe();
     }
 }
-
