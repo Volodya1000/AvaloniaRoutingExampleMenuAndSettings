@@ -7,10 +7,31 @@ namespace AvaloniaRoutingExample.UI;
 
 public class AppViewLocator : IViewLocator
 {
-    public IViewFor ResolveView<T>(T viewModel, string contract = null) => viewModel switch
+    public IViewFor ResolveView<T>(T viewModel, string contract = null)
     {
-        NotificationsSettingsViewModel context => new NotificationsSettingsControl { DataContext = context },
-        GeneralSettingsViewModel context => new GeneralSettingsControl { DataContext = context },
-        _ => throw new ArgumentOutOfRangeException(nameof(viewModel))
-    };
+        var viewModelType = viewModel?.GetType();
+        if (viewModelType == null) return null;
+
+        // Преобразуем например "AvaloniaRoutingExample.ViewModel.GeneralSettingsViewModel"
+        // в "AvaloniaRoutingExample.UI.Views.GeneralSettingsControl"
+        var viewTypeName = viewModelType.FullName
+            ?.Replace(".ViewModel.", ".UI.Views.")
+            ?.Replace("ViewModel", "Control");
+
+        if (viewTypeName == null)
+            return null;
+
+        var viewType = Type.GetType(viewTypeName);
+        if (viewType == null)
+            return null;
+
+        var view = Activator.CreateInstance(viewType);
+        if (view is IViewFor viewFor)
+        {
+            viewFor.ViewModel = viewModel;
+            return viewFor;
+        }
+
+        return null;
+    }
 }
