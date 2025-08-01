@@ -10,7 +10,6 @@
   Title="Настройки">
 
   <Window.Styles>
-    <!-- Базовые стили для кнопок навигации -->
     <Style Selector="Button.navButton">
       <Setter Property="Background" Value="Transparent"/>
       <Setter Property="Foreground" Value="Gray"/>
@@ -19,7 +18,6 @@
       <Setter Property="HorizontalContentAlignment" Value="Left"/>
     </Style>
 
-    <!-- Убираем фон у кнопки при наведении и нажатии, чтобы не перекрывал фон элемента списка -->
     <Style Selector="Button.navButton:pointerover /template/ ContentPresenter">
       <Setter Property="Background" Value="Transparent"/>
     </Style>
@@ -27,7 +25,6 @@
       <Setter Property="Background" Value="Transparent"/>
     </Style>
 
-    <!-- Стили контейнера ListBoxItem -->
     <Style Selector="ListBoxItem">
       <Setter Property="Background" Value="Transparent"/>
       <Setter Property="Margin" Value="0"/>
