@@ -10,38 +10,29 @@ public class MainWindowViewModel : ReactiveObject, IScreen
 {
     public RoutingState Router { get; } = new();
 
-    public ObservableCollection<SectionItemViewModel> SettingsSections { get; }
+    public ObservableCollection<IRoutableViewModel> SettingsSections { get; }
 
     [Reactive]
-    public SectionItemViewModel? CurrentSection { get; private set; }
+    public IRoutableViewModel? CurrentSection { get; set; }
 
-    public ReactiveCommand<SectionItemViewModel, Unit> NavigateToSectionCommand { get; }
+    public ReactiveCommand<IRoutableViewModel, Unit> NavigateToSectionCommand { get; }
 
     public MainWindowViewModel()
     {
-        SettingsSections = new ObservableCollection<SectionItemViewModel>
+        SettingsSections = new ObservableCollection<IRoutableViewModel>
         {
-            new(new GeneralSettingsViewModel(this)),
-            new(new NotificationsSettingsViewModel(this)),
-            new(new DisplaySettingsViewModel(this))
+            new GeneralSettingsViewModel(this),
+            new NotificationsSettingsViewModel(this),
+            new DisplaySettingsViewModel(this)
         };
 
-        NavigateToSectionCommand = ReactiveCommand.Create<SectionItemViewModel>(section =>
+        NavigateToSectionCommand = ReactiveCommand.Create<IRoutableViewModel>(section =>
         {
-            Router.Navigate.Execute(section.ViewModel);
+            Router.Navigate.Execute(section);
             CurrentSection = section;
         });
 
-        // Автоматическое выделение текущего раздела
-        this.WhenAnyValue(x => x.CurrentSection)
-            .Subscribe(current =>
-            {
-                foreach (var section in SettingsSections)
-                    section.IsSelected = section == current;
-            });
-
-        // Навигация по умолчанию
-        CurrentSection = SettingsSections.First();
-        Router.Navigate.Execute(CurrentSection.ViewModel).Subscribe();
+        CurrentSection = SettingsSections[0];
+        Router.Navigate.Execute(CurrentSection).Subscribe();
     }
 }

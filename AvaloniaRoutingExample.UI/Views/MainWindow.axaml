@@ -10,12 +10,12 @@
     Title="Настройки">
 
   <Window.Styles>
-    <Style Selector="Button">
+    <Style Selector="ListBoxItem">
       <Setter Property="Background" Value="Transparent"/>
       <Setter Property="Foreground" Value="Gray"/>
       <Setter Property="FontWeight" Value="Normal"/>
     </Style>
-    <Style Selector="Button.selected">
+    <Style Selector="ListBoxItem:isar:selected">
       <Setter Property="Background" Value="LightBlue"/>
       <Setter Property="Foreground" Value="Black"/>
       <Setter Property="FontWeight" Value="Bold"/>
@@ -23,21 +23,27 @@
   </Window.Styles>
 
   <DockPanel>
-    <StackPanel DockPanel.Dock="Left" Width="180" Margin="10">
-      <TextBlock Text="Разделы:" FontWeight="Bold" Margin="0,0,0,8"/>
-      <ItemsControl ItemsSource="{Binding SettingsSections}">
-        <ItemsControl.ItemTemplate>
-          <DataTemplate>
-            <!-- Исправленная кнопка с правильной привязкой класса -->
-            <Button Content="{Binding UrlPathSegment}"
-                    Command="{Binding DataContext.NavigateToSectionCommand, ElementName=MainWnd}"
-                    CommandParameter="{Binding}"
-                    Classes.selected="{Binding IsSelected}"
-                    Margin="0,2"/>
-          </DataTemplate>
-        </ItemsControl.ItemTemplate>
-      </ItemsControl>
-    </StackPanel>
+    <ListBox
+      DockPanel.Dock="Left"
+      Width="180"
+      Margin="10"
+      ItemsSource="{Binding SettingsSections}"
+      SelectedItem="{Binding CurrentSection, Mode=TwoWay}">
+      <ListBox.ItemTemplate>
+        <DataTemplate>
+          <Button
+            Content="{Binding UrlPathSegment}"
+            Command="{Binding DataContext.NavigateToSectionCommand, ElementName=MainWnd}"
+            CommandParameter="{Binding}"
+            Background="Transparent"
+            BorderBrush="Transparent"
+            HorizontalAlignment="Stretch"
+            HorizontalContentAlignment="Left"
+            Padding="5"
+            />
+        </DataTemplate>
+      </ListBox.ItemTemplate>
+    </ListBox>
 
     <Border Margin="10" BorderBrush="Gray" BorderThickness="1" Padding="10">
       <rxui:RoutedViewHost Router="{Binding Router}">
