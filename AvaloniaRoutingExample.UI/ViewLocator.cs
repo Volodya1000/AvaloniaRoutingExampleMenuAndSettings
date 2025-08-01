@@ -5,7 +5,7 @@ using ReactiveUI;
 
 namespace AvaloniaRoutingExample.UI;
 
-public class AppViewLocator : IViewLocator
+public class ViewLocator : IViewLocator
 {
     public IViewFor ResolveView<T>(T viewModel, string contract = null)
     {
