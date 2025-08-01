@@ -1,25 +1,60 @@
 <Window
-    xmlns="https://github.com/avaloniaui"
-    xmlns:rxui="http://reactiveui.net"
-    xmlns:app="clr-namespace:AvaloniaRoutingExample.UI"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:vm="using:AvaloniaRoutingExample.ViewModel"
-    x:Class="AvaloniaRoutingExample.UI.Views.MainWindow"
-    x:Name="MainWnd"
-    x:DataType="vm:MainWindowViewModel"
-    Title="Настройки">
+  xmlns="https://github.com/avaloniaui"
+  xmlns:rxui="http://reactiveui.net"
+  xmlns:app="clr-namespace:AvaloniaRoutingExample.UI"
+  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+  xmlns:vm="using:AvaloniaRoutingExample.ViewModel"
+  x:Class="AvaloniaRoutingExample.UI.Views.MainWindow"
+  x:Name="MainWnd"
+  x:DataType="vm:MainWindowViewModel"
+  Title="Настройки">
 
   <Window.Styles>
-    <Style Selector="ListBoxItem">
+    <!-- Базовые стили для кнопок навигации -->
+    <Style Selector="Button.navButton">
       <Setter Property="Background" Value="Transparent"/>
       <Setter Property="Foreground" Value="Gray"/>
       <Setter Property="FontWeight" Value="Normal"/>
+      <Setter Property="Padding" Value="8,4"/>
+      <Setter Property="HorizontalContentAlignment" Value="Left"/>
     </Style>
-    <Style Selector="ListBoxItem:isar:selected">
+
+    <!-- Убираем фон у кнопки при наведении и нажатии, чтобы не перекрывал фон элемента списка -->
+    <Style Selector="Button.navButton:pointerover /template/ ContentPresenter">
+      <Setter Property="Background" Value="Transparent"/>
+    </Style>
+    <Style Selector="Button.navButton:pressed /template/ ContentPresenter">
+      <Setter Property="Background" Value="Transparent"/>
+    </Style>
+
+    <!-- Стили контейнера ListBoxItem -->
+    <Style Selector="ListBoxItem">
+      <Setter Property="Background" Value="Transparent"/>
+      <Setter Property="Margin" Value="0"/>
+      <Setter Property="Padding" Value="0"/>
+    </Style>
+
+    <!-- Отключение hover-эффекта для ListBoxItem -->
+    <Style Selector="ListBoxItem:pointerover /template/ ContentPresenter">
+      <Setter Property="Background" Value="Transparent"/>
+    </Style>
+
+    <!-- Подсветка для выбранного элемента -->
+    <Style Selector="ListBoxItem:selected /template/ ContentPresenter">
       <Setter Property="Background" Value="LightBlue"/>
+    </Style>
+
+    <!-- Когда элемент выбран, кнопка внутри становится жирной и чёрной -->
+    <Style Selector="ListBoxItem:selected Button.navButton">
       <Setter Property="Foreground" Value="Black"/>
       <Setter Property="FontWeight" Value="Bold"/>
     </Style>
+
+    <!-- Наведение на кнопку: плавный переход цвета текста -->
+    <Style Selector="Button.navButton:pointerover TextBlock">
+      <Setter Property="Foreground" Value="#333"/>
+    </Style>
+
   </Window.Styles>
 
   <DockPanel>
@@ -31,16 +66,13 @@
       SelectedItem="{Binding CurrentSection, Mode=TwoWay}">
       <ListBox.ItemTemplate>
         <DataTemplate>
+          <!-- Кнопка навигации с классом navButton -->
           <Button
-            Content="{Binding UrlPathSegment}"
+            Classes="navButton"
             Command="{Binding DataContext.NavigateToSectionCommand, ElementName=MainWnd}"
-            CommandParameter="{Binding}"
-            Background="Transparent"
-            BorderBrush="Transparent"
-            HorizontalAlignment="Stretch"
-            HorizontalContentAlignment="Left"
-            Padding="5"
-            />
+            CommandParameter="{Binding}">
+            <TextBlock Text="{Binding UrlPathSegment}"/>
+          </Button>
         </DataTemplate>
       </ListBox.ItemTemplate>
     </ListBox>
@@ -48,7 +80,7 @@
     <Border Margin="10" BorderBrush="Gray" BorderThickness="1" Padding="10">
       <rxui:RoutedViewHost Router="{Binding Router}">
         <rxui:RoutedViewHost.ViewLocator>
-          <app:ViewLocator />
+          <app:ViewLocator/>
         </rxui:RoutedViewHost.ViewLocator>
       </rxui:RoutedViewHost>
     </Border>
